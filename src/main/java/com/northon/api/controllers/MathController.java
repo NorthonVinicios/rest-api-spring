@@ -1,14 +1,19 @@
-package com.northon.api.restapispring;
+package com.northon.api.controllers;
 
 import com.northon.api.exceptions.UnsupporterdMathOperationException;
-import jakarta.websocket.server.PathParam;
+import com.northon.api.math.SimpleMath;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import static com.northon.api.math.ConvertTo.convertToDouble;
+import static com.northon.api.math.Validation.isNumeric;
+
 @RestController
 public class MathController {
     private final AtomicLong counter = new AtomicLong();
+
+    SimpleMath math = new SimpleMath();
 
     @RequestMapping(value = "/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)
     public Double sum(
@@ -18,18 +23,18 @@ public class MathController {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
             throw new UnsupporterdMathOperationException("Please set a numerical character");
         }
-        return convertToDouble(numberOne) + convertToDouble(numberTwo);
+        return math.sum(convertToDouble(numberOne), convertToDouble(numberTwo));
     }
 
-    @RequestMapping(value = "/minus/{numberOne}/{numberTwo}", method = RequestMethod.GET)
-    public Double minus(
+    @RequestMapping(value = "/sub/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+    public Double sub(
             @PathVariable(value = "numberOne") String numberOne,
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
             throw new UnsupporterdMathOperationException("Please set a numerical character");
         }
-        return convertToDouble(numberOne) - convertToDouble(numberTwo);
+        return math.sub(convertToDouble(numberOne),convertToDouble(numberTwo));
     }
 
     @RequestMapping(value = "/multi/{numberOne}/{numberTwo}", method = RequestMethod.GET)
@@ -40,7 +45,7 @@ public class MathController {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
             throw new UnsupporterdMathOperationException("Please set a numerical character");
         }
-        return convertToDouble(numberOne) * convertToDouble(numberTwo);
+        return math.multi(convertToDouble(numberOne), convertToDouble(numberTwo));
     }
 
     @RequestMapping(value = "/div/{numberOne}/{numberTwo}", method = RequestMethod.GET)
@@ -55,27 +60,28 @@ public class MathController {
             throw new UnsupporterdMathOperationException("0 is not supported in divisions");
         }
 
-        return convertToDouble(numberOne) / convertToDouble(numberTwo);
+        return math.div(convertToDouble(numberOne),convertToDouble(numberTwo));
     }
-
-    private Double convertToDouble(String strNumber) throws Exception {
-        if (strNumber == null) {
+    @RequestMapping(value = "/average/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+    public Double average(
+            @PathVariable(value = "numberOne") String numberOne,
+            @PathVariable(value = "numberTwo") String numberTwo
+    ) throws Exception {
+        if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
             throw new UnsupporterdMathOperationException("Please set a numerical character");
         }
-        String number = strNumber.replaceAll(",", ".");
 
-        if (isNumeric(number)) return Double.parseDouble(number);
-        return 1D;
+        return math.average(convertToDouble(numberOne) , convertToDouble(numberTwo));
     }
-
-    private boolean isNumeric(String strNumber) throws Exception {
-        System.out.println(strNumber);
-        if (strNumber == null) {
+    @RequestMapping(value = "/square/{numberOne}", method = RequestMethod.GET)
+    public Double square(
+            @PathVariable(value = "numberOne") String numberOne
+    ) throws Exception {
+        if (!isNumeric(numberOne)) {
             throw new UnsupporterdMathOperationException("Please set a numerical character");
         }
-        String number = strNumber.replaceAll(",", ".");
-        return number.matches("[-+]?[0-9]*\\.?[0-9]+");
 
+        return math.square(convertToDouble(numberOne));
     }
 
 }
