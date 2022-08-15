@@ -1,6 +1,6 @@
 package com.northon.api.controllers;
 
-import com.northon.api.exceptions.UnsupporterdMathOperationException;
+import com.northon.api.exceptions.ResourceNotFoundException;
 import com.northon.api.math.SimpleMath;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
         return math.sum(convertToDouble(numberOne), convertToDouble(numberTwo));
     }
@@ -32,7 +32,7 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
         return math.sub(convertToDouble(numberOne),convertToDouble(numberTwo));
     }
@@ -43,7 +43,7 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
         return math.multi(convertToDouble(numberOne), convertToDouble(numberTwo));
     }
@@ -54,10 +54,10 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
         if (convertToDouble(numberTwo).equals(0D)) {
-            throw new UnsupporterdMathOperationException("0 is not supported in divisions");
+            throw new ResourceNotFoundException("0 is not supported in divisions");
         }
 
         return math.div(convertToDouble(numberOne),convertToDouble(numberTwo));
@@ -68,7 +68,7 @@ public class MathController {
             @PathVariable(value = "numberTwo") String numberTwo
     ) throws Exception {
         if (!isNumeric(numberOne) || !isNumeric(numberTwo)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
 
         return math.average(convertToDouble(numberOne) , convertToDouble(numberTwo));
@@ -78,7 +78,7 @@ public class MathController {
             @PathVariable(value = "numberOne") String numberOne
     ) throws Exception {
         if (!isNumeric(numberOne)) {
-            throw new UnsupporterdMathOperationException("Please set a numerical character");
+            throw new ResourceNotFoundException("Please set a numerical character");
         }
 
         return math.square(convertToDouble(numberOne));

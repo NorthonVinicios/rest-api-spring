@@ -1,12 +1,23 @@
 package com.northon.api.model;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "person")
 public class Person {
     private static final Long seriaversionUID = 1l;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String fisrtName;
+
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
+
+    @Column(name = "last_name")
     private String lastName;
+    @Column
     private String adress;
+    @Column
     private String gender;
 
     public Long getId() {
@@ -17,12 +28,12 @@ public class Person {
         this.id = id;
     }
 
-    public String getFisrtName() {
-        return fisrtName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFisrtName(String fisrtName) {
-        this.fisrtName = fisrtName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
